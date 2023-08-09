@@ -1250,6 +1250,7 @@ def main(args):
                         for _ in range(args.num_validation_images)
                     ]
                 for k, image in enumerate(images):
+                    os.makedirs(f"{args.output_dir}/validation", exist_ok=True)
                     image.save(f"{args.output_dir}/validation/{epoch:04d}_{k}.png")
 
                 for tracker in accelerator.trackers:
