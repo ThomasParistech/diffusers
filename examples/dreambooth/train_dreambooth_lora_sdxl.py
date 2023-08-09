@@ -1249,6 +1249,8 @@ def main(args):
                         pipeline(**pipeline_args, generator=generator).images[0]
                         for _ in range(args.num_validation_images)
                     ]
+                for k, image in enumerate(images):
+                    image.save(f"{args.output_dir}/validation/{epoch:04d}_{k}.png")
 
                 for tracker in accelerator.trackers:
                     if tracker.name == "tensorboard":
@@ -1289,6 +1291,7 @@ def main(args):
             text_encoder_lora_layers=text_encoder_lora_layers,
             text_encoder_2_lora_layers=text_encoder_2_lora_layers,
         )
+        logger.info(f"Lora weights have been saved inside {args.output_dir}")
 
         # Final inference
         # Load previous pipeline
