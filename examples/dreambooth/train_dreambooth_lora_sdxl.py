@@ -1249,9 +1249,11 @@ def main(args):
                         pipeline(**pipeline_args, generator=generator).images[0]
                         for _ in range(args.num_validation_images)
                     ]
+                validation_dir = os.path.join(args.output_dir, "validation")
+                os.makedirs(validation_dir, exist_ok=True)
+                logger.info(validation_dir)
                 for k, image in enumerate(images):
-                    os.makedirs(f"{args.output_dir}/validation", exist_ok=True)
-                    image.save(f"{args.output_dir}/validation/{epoch:04d}_{k}.png")
+                    image.save(os.path.join(validation_dir, f"{epoch:04d}_{k}.png"))
 
                 for tracker in accelerator.trackers:
                     if tracker.name == "tensorboard":
