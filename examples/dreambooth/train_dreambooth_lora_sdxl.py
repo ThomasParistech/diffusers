@@ -1204,6 +1204,10 @@ def main(args):
                     f"Running validation... \n Generating {args.num_validation_images} images with prompt:"
                     f" {args.validation_prompt}."
                 )
+                validation_dir = os.path.join(args.output_dir, "validation")
+                os.makedirs(validation_dir, exist_ok=True)
+                logger.info(f"Validation images will be saved inside {validation_dir}")
+
                 # create pipeline
                 if not args.train_text_encoder:
                     text_encoder_one = text_encoder_cls_one.from_pretrained(
@@ -1249,9 +1253,7 @@ def main(args):
                         pipeline(**pipeline_args, generator=generator).images[0]
                         for _ in range(args.num_validation_images)
                     ]
-                validation_dir = os.path.join(args.output_dir, "validation")
-                os.makedirs(validation_dir, exist_ok=True)
-                logger.info(validation_dir)
+
                 for k, image in enumerate(images):
                     image.save(os.path.join(validation_dir, f"{epoch:04d}_{k}.png"))
 
